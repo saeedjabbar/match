@@ -19,15 +19,6 @@ export default function App() {
       console.log("You won!")
     }
   }, [dice])
-  /**
-   * Challenge: Tie off loose ends!
-   * 1. If tenzies is true, Change the button text to "New Game"
-   * 2. If tenzies is true, use the "react-confetti" package to
-   *    render the <Confetti /> component 🎉
-   * 
-   *    Hint: don't worry about the `height` and `width` props
-   *    it mentions in the documentation.
-   */
 
   function generateNewDie() {
     return {
@@ -47,6 +38,8 @@ export default function App() {
 
 
   function rollDice() {
+    tenzies && setDice(allNewDice())
+
     setDice(oldDice => oldDice.map(die => {
       return die.isHeld ?
         die :
@@ -73,7 +66,6 @@ export default function App() {
 
   return (
     <main>
-      {/* Render Confetti component if `tenzies` is true*/}
       <h1 className="title">Tenzies</h1>
       <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
       <div className="dice-container">
