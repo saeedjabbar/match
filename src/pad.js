@@ -1,33 +1,36 @@
 import React from "react"
-
 /**
- * Challenge: Convert this stateful function component
- * to a stateful class component. At the end, everything
- * should work exactly the way it does now.
+ * Challenge: convert the class fields and arrow methods
+ * to make use of the class `constructor` method.
  * 
- * 1. Change the syntax to a class component
- * 2. Declare state in the class component that
- *    can hold the value of `count`
- * 3. Update the add and subtract methods so you won't
- *    get the error about calling `setState` on undefined
- * 4. Update the values in the render method to account
- *    for the changeover to a class component
+ * 1. Add a constructor() method
+ * 2. Call super()
+ * 3. Initialize your state inside the constructor
+ * 4. Convert your arrow function class methods back to
+ *    regular class methods
+ * 5. Bind those class methods in the constructor method
  */
 
-class App extends React.Component {
-  state = {
+export default class App extends React.Component {
+
+  constructor(){
+    super()
+    this.state = {
       count: 0
+    }
+    this.add = this.add.bind(this)
+    this.subtract = this.subtract.bind(this)
+  }
+
+  add(){
+    this.setState(prevState => ({ count: prevState.count + 1 }))
+  }
+
+  subtract(){
+    this.setState(prevState => ({ count: prevState.count - 1 }))
   }
 
   render() {
-     add = () => {
-      this.setState(prevCount => prevCount.count + 1)
-    }
-
-     subtract = () => {
-      this.setState(prevCount => prevCount.count - 1)
-    }
- 
     return (
       <div className="counter">
         <button className="counter--minus" onClick={this.subtract}>–</button>
