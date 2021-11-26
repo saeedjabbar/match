@@ -1,36 +1,16 @@
 import React from "react"
-import PropTypes from "prop-types"
-
 /**
- * Challenge: Here's a component meant to take an image (`src` prop) and round the edges.
- * It has some styling applied with CSS to ensure it isn't too large on the page, but
- * we want this component to allow for any image source and any kind of border radius to be applied
+ * A function that takes a component as its first argument and returns a new component that wraps
+ * the given component, providing extra capabilities to it.
  * 
- * 1. The component should always receive a `src` prop, and it should always be a string
- * 2. The component should be able to accept only a string or a number for the `borderRadius` prop
- *      (https://reactjs.org/docs/typechecking-with-proptypes.html#proptypes)
- * 3. If it doesn't receive a `borderRadius` prop at all, it should default it to "50%"
+ * Challenge: Write a higher-order component that passes a new prop to the given component
+ * called "favoriteNumber" and includes your own, personal, favorite number
+ * 
+ * Then, in App.js, render that favorite number to the screen
  */
-
-function RoundedImg(props) {
-  return (
-    <img
-      src={props.src}
-      style={{ borderRadius: props.borderRadius }}
-      className="round-img"
-      alt=""
-    />
-  )
+export function withFavoriteNumber(component) {
+  const Component = component
+  return function(props) {
+    return <Component favoriteNumber={42} {...props} />
+  } 
 }
-
-RoundedImg.propTypes = {
-  src: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number]).isRequired
-}
-
-RoundedImg.defaultProps = {
-  borderRadius: "50%"
-}
-
-export default RoundedImg
