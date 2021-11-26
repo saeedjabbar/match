@@ -1,44 +1,36 @@
 import React from "react"
+import PropTypes from "prop-types"
+
 /**
- * Challenge: convert the class fields and arrow methods
- * to make use of the class `constructor` method.
+ * Challenge: Here's a component meant to take an image (`src` prop) and round the edges.
+ * It has some styling applied with CSS to ensure it isn't too large on the page, but
+ * we want this component to allow for any image source and any kind of border radius to be applied
  * 
- * 1. Add a constructor() method
- * 2. Call super()
- * 3. Initialize your state inside the constructor
- * 4. Convert your arrow function class methods back to
- *    regular class methods
- * 5. Bind those class methods in the constructor method
+ * 1. The component should always receive a `src` prop, and it should always be a string
+ * 2. The component should be able to accept only a string or a number for the `borderRadius` prop
+ *      (https://reactjs.org/docs/typechecking-with-proptypes.html#proptypes)
+ * 3. If it doesn't receive a `borderRadius` prop at all, it should default it to "50%"
  */
 
-export default class App extends React.Component {
-
-  constructor(){
-    super()
-    this.state = {
-      count: 0
-    }
-    this.add = this.add.bind(this)
-    this.subtract = this.subtract.bind(this)
-  }
-
-  add(){
-    this.setState(prevState => ({ count: prevState.count + 1 }))
-  }
-
-  subtract(){
-    this.setState(prevState => ({ count: prevState.count - 1 }))
-  }
-
-  render() {
-    return (
-      <div className="counter">
-        <button className="counter--minus" onClick={this.subtract}>–</button>
-        <div className="counter--count">
-          <h1>{this.state.count}</h1>
-        </div>
-        <button className="counter--plus" onClick={this.add}>+</button>
-      </div>
-    )
-  }
+function RoundedImg(props) {
+  return (
+    <img
+      src={props.src}
+      style={{ borderRadius: props.borderRadius }}
+      className="round-img"
+      alt=""
+    />
+  )
 }
+
+RoundedImg.propTypes = {
+  src: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number]).isRequired
+}
+
+RoundedImg.defaultProps = {
+  borderRadius: "50%"
+}
+
+export default RoundedImg
