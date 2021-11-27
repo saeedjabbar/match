@@ -1,16 +1,135 @@
 import React from "react"
-/**
- * A function that takes a component as its first argument and returns a new component that wraps
- * the given component, providing extra capabilities to it.
- * 
- * Challenge: Write a higher-order component that passes a new prop to the given component
- * called "favoriteNumber" and includes your own, personal, favorite number
- * 
- * Then, in App.js, render that favorite number to the screen
- */
-export function withFavoriteNumber(component) {
-  const Component = component
-  return function(props) {
-    return <Component favoriteNumber={42} {...props} />
-  } 
+import DataFetcher from "./DataFetcher"
+
+function App() {
+  return (
+    <div>
+      <DataFetcher url="https://swapi.dev/api/people/1">
+        {/**
+                 * Part 2: Call the function the DataFetcher is expecting.
+                 * If should receive the data and the loading state, and return the JSX
+                 * that makes use of that info. If the data is still loading, display
+                 * "Loading..." in an h1 element, and once the data has loaded, just display 
+                 * the data with `<p>{JSON.stringify(data)}</p>`
+                 * 
+                 * Remember: With the render props pattern, you can use a custom prop
+                 * (typically called `render`), OR you can use `props.children`. Based
+                 * on what's already written here for you, you should be able to figure
+                 * out which of these we're using. (You may have to make changes to the
+                 * DataFetcher component based on what you see here.)
+                 */}
+
+        {
+          ({ loading, data, url }) => {
+            <div>
+              {loading && <p>Loading</p>}
+            </div>
+          }
+        }
+      </DataFetcher>
+    </div>
+  )
 }
+
+export default App
+
+
+import React, { Component } from "react"
+
+/**
+ * Challenge: Fill in the blanks in the code here (part 1) and in the App.js
+ * file (part 2) until the code is working.
+ * 
+ * Render props are meant to allow us to re-use functionalty in multiple places.
+ * If your app were never to become more complicated than what we have here, it's
+ * probably not worth the effort to create a separate data fetching component.
+ * 
+ * HOWEVER, if you did find yourself repeating these things (setting a loading state,
+ * returning data, etc.) over and over in your app, a component like this might 
+ * make sense to build.
+ * 
+ * Tip: you can use your browser's dev tools to inspect the full React errors 
+ * in the console. Click in the menu bar above the editor to access the real
+ * right-click menu, or use your browser's shortcut code to get to the dev tools.
+ */
+
+class DataFetcher extends Component {
+  state = {
+    loading: false,
+    data: null
+  }
+
+  componentDidMount() {
+    this.setState({ loading: true })
+    fetch(this.props.url)
+      .then(res => res.json())
+      .then(data => this.setState({ data: data, loading: false }))
+  }
+
+  render() {
+    return (
+      /**
+       * Part 1: Figure out what you're returning here. You should pass the 
+       * loading state and the data state through to the component needing it.
+       * 
+       * Remember: the render props pattern allows us to separate the data 
+       * and logic (like fetching data and setting the loading state) from 
+       * the UI (JSX). Think about which one of those this component is in 
+       * charge of. You'll need to pass both pieces of state to whatever 
+       * component is making use of the DataFetcher
+       * 
+       * Also, there's more than one "correct" way to make use of the render
+       * props pattern. Check App.js to determine which way it's being implemented
+       * in this challenge.
+       */
+      <div>
+        {this.props.children({
+          loading: this.state.loading,
+          data: this.state.data,
+          url: this.props.url
+        })}
+      </div>
+    )
+  }
+}
+
+export default DataFetcher
+
+
+import React from "react"
+import DataFetcher from "./DataFetcher"
+
+function App() {
+  return (
+    <div>
+      <DataFetcher url="https://swapi.dev/api/people/1">
+        {/**
+                 * Part 2: Call the function the DataFetcher is expecting.
+                 * If should receive the data and the loading state, and return the JSX
+                 * that makes use of that info. If the data is still loading, display
+                 * "Loading..." in an h1 element, and once the data has loaded, just display 
+                 * the data with `<p>{JSON.stringify(data)}</p>`
+                 * 
+                 * Remember: With the render props pattern, you can use a custom prop
+                 * (typically called `render`), OR you can use `props.children`. Based
+                 * on what's already written here for you, you should be able to figure
+                 * out which of these we're using. (You may have to make changes to the
+                 * DataFetcher component based on what you see here.)
+                 */}
+
+        {
+          ({ loading, data, url }) => {
+            <div>
+              {loading && <p>Loading from: {url}</p>}
+              {!loading && <p>{JSON.stringify(data)}</p>}
+
+            </div>
+          }
+        }
+      </DataFetcher>
+    </div>
+  )
+}
+
+export default App
+
